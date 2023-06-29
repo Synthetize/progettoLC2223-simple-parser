@@ -6,10 +6,10 @@ public class ParserBaseVisitor extends RegexParserBaseVisitor<NFAThompson>{
 
     @Override
     public NFAThompson visitStart(RegexParserParser.StartContext ctx) {
-        NFAThompson thompsonGraph = visit(ctx.expr());
-        stringValidation validator = new stringValidation(ctx.getText(), thompsonGraph);
+        nfa = visit(ctx.expr());
+        stringValidation validator = new stringValidation(ctx.getText(), nfa);
         validator.validation();
-        return thompsonGraph;
+        return nfa;
     }
 
     @Override
@@ -46,7 +46,12 @@ public class ParserBaseVisitor extends RegexParserBaseVisitor<NFAThompson>{
     }
 
 
-
+    @Override
+    public NFAThompson visitParens(RegexParserParser.ParensContext ctx) {
+        NFAThompson thompsonGraphs = nfa.kleene(visit(ctx.expr()));
+        System.out.println(thompsonGraphs);
+        return thompsonGraphs;
+    }
 
     @Override
     public NFAThompson visitKleenechar(RegexParserParser.KleenecharContext ctx) {
@@ -62,6 +67,7 @@ public class ParserBaseVisitor extends RegexParserBaseVisitor<NFAThompson>{
     public NFAThompson visitKleeneparens(RegexParserParser.KleeneparensContext ctx) {
        // System.out.println("--------KLEENEPARENTS----------");
         NFAThompson thompsonGraphs = nfa.kleene(visit(ctx.expr()));
+        //System.out.println(thompsonGraphs);
       //  System.out.println(thompsonGraphs);
         return thompsonGraphs;
     }

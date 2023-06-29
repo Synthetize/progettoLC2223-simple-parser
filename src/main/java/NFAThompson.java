@@ -33,6 +33,10 @@ public class NFAThompson {
         this.finalState = finalState;
     }
 
+    public NFAState getInitialState() {
+        return initialState;
+    }
+
     public ArrayList<NFATransition> getTransitions() {
         return transitions;
     }
@@ -53,6 +57,7 @@ public class NFAThompson {
     }
 
     public NFAThompson concat (ArrayList<NFAThompson> thompsonGraphs){
+
         NFAThompson firstThompsonGraph = thompsonGraphs.get(0);
         NFAThompson secondThompsonGraph = thompsonGraphs.get(1);
 
@@ -60,6 +65,7 @@ public class NFAThompson {
         firstThompsonGraph.finalState.addTransition(secondThompsonGraph.initialState.getStateTransitions());
         //change the initial state of transitions added to the first thompson graph
         firstThompsonGraph.finalState.changeTransitionInitialState();
+        firstThompsonGraph.finalState.clearStateStatus();
         secondThompsonGraph.setNewInitialState(firstThompsonGraph.finalState);
 
         NFAThompson concatThompson = new NFAThompson();
@@ -104,9 +110,11 @@ public class NFAThompson {
         //create a new transition from the new initial state to the thompson graph initial state
         NFATransition transition1 = new NFATransition(newInitialState, thompsonGraph.initialState, "epsilon");
         newInitialState.addTransition(transition1);
+        thompsonGraph.initialState.clearStateStatus();
         //create a new transition from the thompson graph final state to the new final state
         NFATransition transition2 = new NFATransition(thompsonGraph.finalState, newFinalState, "epsilon");
         thompsonGraph.finalState.addTransition(transition2);
+        thompsonGraph.finalState.clearStateStatus();
         //create a new transition from the new initial state to the new final state
         NFATransition transition3 = new NFATransition(newInitialState, newFinalState, "epsilon");
         newInitialState.addTransition(transition3);
@@ -115,6 +123,8 @@ public class NFAThompson {
         thompsonGraph.finalState.addTransition(transition4);
         NFAThompson kleeneThompson = new NFAThompson();
         //set the new initial state and the new final state of the new thompson graph and add the transitions
+        kleeneThompson.initialState = newInitialState;
+        kleeneThompson.finalState = newFinalState;
         kleeneThompson.setThompsonDetails(newInitialState, newFinalState, new ArrayList<>(Arrays.asList(transition1, transition2, transition3, transition4)));
         kleeneThompson.transitions.addAll(thompsonGraph.transitions);
         return kleeneThompson;

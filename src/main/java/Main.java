@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        CharStream input = CharStreams.fromString("(ab)*,a,cb,fh,da");
+        CharStream input = CharStreams.fromString("(a+ b)*abb,abbb");
 
         RegexParserLexer lexer = new RegexParserLexer(input);
 
