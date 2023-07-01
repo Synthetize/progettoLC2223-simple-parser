@@ -65,9 +65,11 @@ public class NFAThompson {
         firstThompsonGraph.finalState.addTransition(secondThompsonGraph.initialState.getStateTransitions());
         //change the initial state of transitions added to the first thompson graph
         firstThompsonGraph.finalState.changeTransitionInitialState();
+        //clear initial/final values
         firstThompsonGraph.finalState.clearStateStatus();
+        //change the second thompson graph initial state with the first thompson graph final state
         secondThompsonGraph.setNewInitialState(firstThompsonGraph.finalState);
-
+        //create a new NFAThompson object to return
         NFAThompson concatThompson = new NFAThompson();
         concatThompson.setNewInitialState(firstThompsonGraph.initialState);
         concatThompson.setNewFinalState(secondThompsonGraph.finalState);
@@ -80,6 +82,12 @@ public class NFAThompson {
     public NFAThompson union(ArrayList<NFAThompson> thompsonGraphs){
         NFAThompson firstThompsonGraph = thompsonGraphs.get(0);
         NFAThompson secondThompsonGraph = thompsonGraphs.get(1);
+        //clear all states initial/final values
+        firstThompsonGraph.initialState.clearStateStatus();
+        secondThompsonGraph.initialState.clearStateStatus();
+        firstThompsonGraph.finalState.clearStateStatus();
+        secondThompsonGraph.finalState.clearStateStatus();
+        //create a new initial state and a new final state for the union thompson graph
         NFAState newInitialState = new NFAState(true, false);
         NFAState newFinalState = new NFAState(false, true);
         //create a new transition from the new initial state to the first thompson graph initial state

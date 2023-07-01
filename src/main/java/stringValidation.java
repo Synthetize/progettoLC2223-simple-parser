@@ -29,7 +29,6 @@ public class stringValidation {
         }
         System.out.println("Final output: " + finalOutput);
 
-
     }
 
     public boolean accept(ArrayList<NFAState> states, String toCheck, Integer charIndex) {

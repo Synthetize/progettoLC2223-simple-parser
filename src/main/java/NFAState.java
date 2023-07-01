@@ -57,6 +57,7 @@ public class NFAState {
 
     @Override
     public String toString() {
-        return String.valueOf(stateName);
+        return String.valueOf(stateName) + " " + String.valueOf(isInitial) + " " + String.valueOf(isFinal);
     }
+
 }
